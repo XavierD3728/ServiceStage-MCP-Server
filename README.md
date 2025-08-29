@@ -135,4 +135,4 @@ mcp_server/
 
 ## 📌 致谢 & 贡献
 
-项目由 **XavierD** 完成，实习期间在华为云 PaaS 团队主导开发，交付了完整的 MCP Server 三代版本。欢迎 Star 或使用反馈。
+项目由 **XavierD3728** 完成，实习期间在华为云 PaaS 团队主导开发，交付了完整的 MCP Server 三代版本。欢迎 Star 或使用反馈。
