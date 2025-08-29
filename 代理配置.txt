@@ -1,0 +1,5 @@
+# 设置 HTTP/HTTPS 代理（PowerShell语法）
+$env:HTTP_PROXY = "<你的proxy代理>"
+$env:HTTPS_PROXY = "<你的proxy代理>"
+
+http://<工号:密码(转义)>@canpqwg00153.huawei.com:8080

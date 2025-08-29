@@ -1,0 +1,2 @@
+样例
+HW_AUTH_TOKEN=< 你的 ServiceStage Tokens XXX>

@@ -1,0 +1,77 @@
+🛠 从零开始配置虚拟环境（Windows PowerShell）
+
+1. 进入目标目录
+
+假设要配置 mcp_server_v2.0：
+
+cd D:\Programm\mcp_server_v2.0
+
+
+2. 创建虚拟环境
+
+有两种方式（任选其一）：
+
+2.1 标准 Python：
+
+python -m venv .venv
+
+2.2 uv 工具（推荐，如果已安装 uv）：
+
+uv venv
+
+这会在当前目录下生成 .venv 文件夹。
+
+
+3. 激活虚拟环境
+
+3.1 因为 PowerShell 默认限制执行脚本，需要先放行：
+
+Set-ExecutionPolicy RemoteSigned -Scope Process
+
+3.2 然后激活 venv：
+
+.\.venv\Scripts\Activate.ps1
+
+激活后，命令行前面会出现 (.venv) 前缀，说明虚拟环境已启用。
+
+
+4. 配置网络代理（如果需要）
+
+公司内网一般需要代理才能安装包：
+
+$env:HTTP_PROXY = "<你的proxy代理>"
+
+$env:HTTPS_PROXY = "<你的proxy代理>"
+
+
+5. 安装依赖
+
+5.1 对于 gen_openapi_to_mcp.py（v2.0）：
+
+pip install mcp httpx pyyaml
+
+5.2 对于 mcp_agent_ops.py（v3.0）：
+
+pip install mcp httpx
+
+
+6. 验证依赖
+
+pip list
+
+确认 mcp、httpx（以及 v2.0 的 pyyaml）已经安装。
+
+
+7. 在 CherryStudio 配置
+
+例如 v2.0：
+
+命令: uv
+参数:
+--directory
+D:\Programm\mcp_server_v2.0
+run
+gen_openapi_to_mcp.py
+
+
+✅ 至此，环境就完全搭好了。

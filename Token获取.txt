@@ -1,0 +1,44 @@
+一、登录网址 华为云-OpenAPI-统一身份认证服务
+https://console.huaweicloud.com/apiexplorer/#/openapi/IAM/debug?version=v3&api=KeystoneCreateUserTokenByPassword
+
+IAM登录
+<IAM登录账号>
+<IAM登录用户名>
+<IAM登录密码>
+
+项目id <你的项目id>
+==================================================================================
+二、请求Body:
+{
+ "auth": {
+  "identity": {
+   "methods": [
+    "password"
+   ],
+   "password": {
+    "user": {
+     "domain": {
+      "name": "<IAM登录账号>"
+     },
+     "name": "<IAM登录用户名>",
+     "password": "<IAM登录密码>"
+    }
+   }
+  },
+  "scope": {
+   "project": {
+    "id": "<你的项目id>"
+   }
+  }
+ }
+}
+===============================================================================================
+三、请求头获取Tokens:
+ "X-Subject-Token":"<你的Tokens>"
+"region_id": "<分区id>"
+================================================================================================
+四、测试curl命令：
+curl -v -x "<你的代理proxy地址>" \
+  "https://servicestage.<分区id>.myhuaweicloud.com/v3/<你的项目id>/cas/environments" \
+  -H "X-Auth-Token:<你的Tokens>"\
+  --ssl-no-revoke

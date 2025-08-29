@@ -1,0 +1,20 @@
+1.命令：
+
+uv
+
+
+2.参数：
+
+--directory
+<gen_openapi_to_mcp.py目录>
+run
+gen_openapi_to_mcp.py
+
+
+3.环境变量（最少必填以下）：
+
+HW_AUTH_TOKEN=<你的ServiceStage Tokens>
+SERVICESTAGE_BASE=https://servicestage.<你的分区id>.myhuaweicloud.com
+SS_SPEC_PATH=<你的spec文件 ss_environment_api.yaml地址>
+（可选调试）HTTP_VERIFY=false
+（可选调试）HTTP_TIMEOUT=60

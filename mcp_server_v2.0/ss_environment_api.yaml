@@ -1,0 +1,2376 @@
+openapi: 3.0.1
+info:
+  title: ServiceStage application deployment and operation management API v3
+  description: This is an Open API descriptor for Huawei ServiceStage application  deployment. The operations cover the provsining life-cycle management broker APIs that allow users to create, update and delete an application instance on the Huawei cloud.
+  version: '2.13'
+tags:
+  - name: Environment
+  - name: IacResource
+  - name: Cell
+  - name: Addon
+  - name: Snapshot
+  - name: ResourceTemplate
+externalDocs:
+  description: Find out more about CAS service broker
+  url: http://office-service.huawei.com/DocView.aspx?did=bd722989-3955-46f7-b79f-19f4833807c6
+servers:
+  - url: https://servicestage.{region}.xxx.com
+paths:
+  /v3/{project_id}/cas/environments:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - Environment
+      summary: get all environments
+      description: get all environments
+      operationId: GetEnvironments
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/order_by'
+        - $ref: '#/components/parameters/order'
+        - name: name
+          in: query
+          description: environment name
+          required: false
+          schema:
+            type: string
+        - name: environment_id
+          in: query
+          description: environment id
+          required: false
+          schema:
+            type: string
+        - name: enterprise_project_id
+          in: query
+          description: enterprise project id
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_list_resp'
+        '500':
+          $ref: '#/components/responses/500'
+    post:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - Environment
+      summary: create an envionment
+      operationId: CreateEnvironment
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+      requestBody:
+        required: false
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/environment_create'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_upsert_resp'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  /v3/{project_id}/cas/environments/{environment_id}:
+    get:
+      tags:
+        - Environment
+      summary: get environment by id
+      operationId: GetEnvironmentInfo
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_view'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    put:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - Environment
+      summary: modify environment by id
+      operationId: ModifyEnvironment
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/environment_modify'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_upsert_resp'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+        - Environment
+      summary: delete environment by id
+      operationId: DeleteEnvironment
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  /v3/{project_id}/cas/environments/{environment_id}/resources:
+    put:
+      tags:
+        - Environment
+      summary: modify resource for a environment
+      operationId: ModifyResourceInEnvironment
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/environment_resource_modify'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_resources'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - Environment
+      summary: get environment resources
+      operationId: GetEnvironmentResources
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_resources'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 查询环境资源
+      operationId: QueryEnvironmentIacResource
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/auth-token'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/iac_resource'
+      x-order: 0
+    post:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 新增环境资源
+      operationId: AddEnvironmentIacResource
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/auth-token'
+      requestBody:
+        required: false
+        description: ''
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/iac_resource_create'
+              type: array
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_view'
+      x-order: 2
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/{resource_id}:
+    put:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 更新一个环境资源
+      operationId: UpdateEnvironmentIacResource
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/auth-token'
+        - name: resource_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iac_resource_create'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_view'
+      x-order: 1
+    delete:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 删除一个环境资源
+      operationId: DeleteEnvironmentIacResource
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/auth-token'
+        - name: resource_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_view'
+      x-order: 4
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/provision:
+    post:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 开通环境的真实资源
+      operationId: ProvisionEnvResource
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/auth-token'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/environment_view'
+      x-order: 5
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/provision-histories:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 查询资源开通历史
+      operationId: GetEnvProvisionHistories
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/order_by'
+        - $ref: '#/components/parameters/order'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentsHistory'
+      x-order: 7
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/provision-histories/{history_id}:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 查询资源开通某次历史详情
+      operationId: GetEnvProvisionHistory
+      parameters:
+        - name: history_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deployment_history'
+      x-order: 8
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/provision-histories/{history_id}/events:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 查询资源开通某次历史的事件
+      operationId: GetEnvProvisionEvent
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - name: history_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/stack_event'
+      x-order: 9
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/latest-provision:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 查询最新资源开通详情
+      operationId: GetEnvLatestProvision
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/deployment_history'
+      x-order: 10
+  /v3/{project_id}/cas/environments/{environment_id}/iac-resources/latest-provision/events:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      tags:
+        - IacResource
+      summary: 查询最新资源开通的日志
+      operationId: GetEnvLatestProvisionEvent
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/stack_event'
+      x-order: 11
+  /v3/{project_id}/cas/environments/{environment_id}/cells:
+    post:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: create cell in environment
+      operationId: CreateEnvironmentCell
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - name: x-auth
+          in: query
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/auth-token'
+      requestBody:
+        required: false
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cell_create'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cell_view'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '500':
+          description: internal service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+      tags:
+        - Cell
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: post
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/cells
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+  /v3/{project_id}/cas/environments/{environment_id}/cell/{cell_id}:
+    delete:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      operationId: DeleteEnvironmentCell
+      x-api-type: open-api
+      parameters:
+        - name: cell_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '204':
+          $ref: '#/components/responses/204'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+        - Cell
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: DELETE
+          name: public_lvs
+          path: /v3/{project_id}/cas/release-plans/{release_plan_id}
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: PATH
+            name: release_plan_id
+            origin: REQUEST
+            value: release_plan_id
+          - description: ''
+            in: PATH
+            name: project_id
+            origin: REQUEST
+            value: project_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-query-string-encode: ENABLE
+      x-apigateway-request-type: public
+  /v3/{project_id}/cas/environments/{environment_id}/cells/{cell_id}:
+    put:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: modify cell in environment
+      operationId: ModifyEnvironmentCell
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - name: cell_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/auth-token'
+      requestBody:
+        required: false
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cell_modify'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cell_view'
+      tags:
+        - Cell
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: post
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/cells
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      operationId: GetEnvironmentCell
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - name: cell_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/order_by'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/auth-token'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cell_view'
+      tags:
+        - Cell
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: get
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/cells
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+          - name: limit
+            in: query
+            description: max number per page, default 1000 for not paging
+            origin: REQUEST
+            value: limit
+          - name: offset
+            in: query
+            description: offset for query, default 0
+            origin: REQUEST
+            value: offset
+          - name: order_by
+            in: query
+            description: order key
+            origin: REQUEST
+            value: order_by
+          - name: order
+            in: query
+            description: desc or asc, default desc
+            origin: REQUEST
+            value: order
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+  /v3/{project_id}/cas/environments/{environment_id}/addons:
+    post:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: create addon in the environment
+      operationId: CreateAddon
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: post
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+      x-order: 0
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: get addon in the environment
+      operationId: ListEnvironmentAddons
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: get
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+      x-order: 1
+  /v3/{project_id}/cas/environments/{environment_id}/addons/{addon_id}:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: get addon info
+      operationId: ShowAddonInfo
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/addon_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: get
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons/{addon_id}
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+          - description: ''
+            in: path
+            name: addon_id
+            origin: REQUEST
+            value: addon_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+      x-order: 2
+    put:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: update addon in the environment
+      operationId: ModifyAddon
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/addon_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: put
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons/{addon_id}
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+          - description: ''
+            in: path
+            name: addon_id
+            origin: REQUEST
+            value: addon_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+      x-order: 3
+    delete:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: delete addon in the environment
+      operationId: DeleteAddon
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/addon_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: delete
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons/{addon_id}
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+          - description: ''
+            in: path
+            name: addon_id
+            origin: REQUEST
+            value: addon_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+      x-order: 4
+  /v3/{project_id}/cas/environments/{environment_id}/addons/{addon_id}/action:
+    post:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: action addon in the environment
+      operationId: UpdateAddonAction
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+        - $ref: '#/components/parameters/addon_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: post
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons/{addon_id}/action
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+          - description: ''
+            in: path
+            name: addon_id
+            origin: REQUEST
+            value: addon_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+  /v3/{project_id}/cas/environments/{environment_id}/addons-metadata:
+    get:
+      x-is-registered: 'N'
+      x-support-sdk: 'N'
+      summary: get addons-metadata in the environment
+      operationId: ShowAddonMetadata
+      x-api-type: open-api
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Addon
+      x-apigateway-backend:
+        httpVpcEndpoints:
+          description: ''
+          method: get
+          name: public_lvs
+          path: /v3/{project_id}/cas/environments/{environment_id}/addons-metadata
+          scheme: https
+          timeout: 30000
+        parameters:
+          - description: ''
+            in: path
+            name: project_id
+            origin: REQUEST
+            value: project_id
+          - description: ''
+            in: path
+            name: environment_id
+            origin: REQUEST
+            value: environment_id
+        type: HTTP-VPC
+      x-apigateway-cors: false
+      x-apigateway-match-mode: NORMAL
+      x-apigateway-request-type: public
+  /v3/{project_id}/cas/environments/parse-template-package:
+    post:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - Snapshot
+      operationId: ParseEnvTemplatePackage
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+      requestBody:
+        required: false
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/parse_template_package_req'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/template_content'
+  /v3/{project_id}/cas/environments/{environment_id}/records:
+    get:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - Snapshot
+      summary: 获取环境部署记录
+      operationId: ListEnvironmentRecords
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/env_records_resp'
+  /v3/{project_id}/cas/environments/{environment_id}/rollback:
+    post:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - Snapshot
+      summary: 回滚环境
+      operationId: RollbackEnvironment
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/env_action_resp'
+  /v3/{project_id}/cas/environments/{environment_id}/refresh:
+    post:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - Environment
+      summary: 刷新环境
+      operationId: RefreshEnvironment
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/env_action_resp'
+  /v3/{project_id}/cas/resource-templates:
+    get:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - ResourceTemplate
+      summary: 查询资源模板列表
+      description: 此API用来查询资源模板列表
+      operationId: ListResourceTemplates
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/order_by'
+        - $ref: '#/components/parameters/order'
+        - name: name
+          in: query
+          required: false
+          description: 模板名
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/list_templates_resp'
+      x-order: 0
+    post:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - ResourceTemplate
+      summary: 创建资源模板
+      description: 此API用来创建资源模板
+      operationId: CreateResourceTemplate
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/template_create'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resource_template_view'
+      x-order: 1
+  /v3/{project_id}/cas/resource-templates/{resource_template_id}:
+    get:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - ResourceTemplate
+      summary: 根据模板ID获取资源模板信息
+      description: 此API用来根据模板ID获取资源模板信息
+      operationId: GetResourceTemplate
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - name: resource_template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resource_template_view'
+      x-order: 2
+    put:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - ResourceTemplate
+      summary: 根据模板ID更新资源模板
+      description: 此API用来根据模板ID更新资源模板
+      operationId: ModifyResourceTemplate
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - name: resource_template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/template_create'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resource_template_view'
+      x-order: 3
+    delete:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - ResourceTemplate
+      summary: 根据模板ID删除资源模板
+      description: 此API用来根据模板ID删除资源模板
+      operationId: DeleteResourceTemplate
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - name: resource_template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+      x-order: 4
+  /v3/{project_id}/cas/environments/{environment_id}/export:
+    post:
+      x-is-registered: 'Y'
+      x-support-sdk: 'N'
+      tags:
+        - Environment
+      summary: 导出环境模板
+      description: 此API用来基于环境ID导出环境模板
+      operationId: ExportEnvironment
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+        - $ref: '#/components/parameters/environment_id'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/export_environment'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/zip:
+              schema:
+                type: string
+components:
+  responses:
+    '204':
+      description: success
+    '400':
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_response'
+    '404':
+      description: resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_response'
+    '500':
+      description: internal service error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_response'
+  parameters:
+    auth-token:
+      name: X-Auth-Token
+      in: header
+      description: Authentication Token
+      required: true
+      schema:
+        type: string
+    project_id:
+      name: project_id
+      in: path
+      description: ID of the tenant's project on the cloud
+      required: true
+      schema:
+        type: string
+    version:
+      name: version
+      in: path
+      description: Version of configuration
+      required: true
+      schema:
+        type: string
+    environment_id:
+      name: environment_id
+      in: path
+      description: ID of environment
+      required: true
+      schema:
+        type: string
+    application_id:
+      name: application_id
+      in: path
+      description: ID of application
+      required: true
+      schema:
+        type: string
+    component_id:
+      name: component_id
+      in: path
+      description: ID of component
+      required: true
+      schema:
+        type: string
+    addon_id:
+      name: addon_id
+      in: path
+      description: id of addon
+      required: true
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      description: max number per page, default 1000 for not paging
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+    offset:
+      name: offset
+      in: query
+      description: offset for query, default 0
+      required: false
+      schema:
+        type: integer
+    order_by:
+      name: order_by
+      in: query
+      description: order key
+      required: false
+      schema:
+        type: string
+    order:
+      name: order
+      in: query
+      description: desc or asc, default desc
+      required: false
+      schema:
+        type: string
+        enum:
+          - desc
+          - asc
+    resource_type:
+      name: resource_type
+      in: query
+      description: type of resource
+      required: true
+      schema:
+        type: string
+        enum:
+          - ecs
+          - cce
+    lane_group_id:
+      name: lane_group_id
+      in: path
+      description: id of lane group
+      required: true
+      schema:
+        type: string
+    lane_id:
+      name: lane_id
+      in: path
+      description: id of lane
+      required: true
+      schema:
+        type: string
+  schemas:
+    environment_view:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        enterprise_project_id:
+          type: string
+        vpc_id:
+          type: string
+        creator:
+          type: string
+        create_time:
+          type: integer
+        update_time:
+          type: integer
+        deploy_mode:
+          type: string
+          enum:
+            - container
+            - virtualmachine
+            - mixed
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource'
+        labels:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+        resource_create_mode:
+          type: string
+          description: 资源创建类型
+        iac_resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/iac_resource'
+          description: iac资源列表
+        iac_task_status:
+          type: string
+          description: iac任务状态
+        config_mode:
+          type: string
+          description: 创建模式ui和template
+        template_source:
+          description: 模板来源
+          $ref: '#/components/schemas/template_source'
+        template_content:
+          $ref: '#/components/schemas/template_content'
+          description: 模板内容
+        job_id:
+          type: string
+          description: 模板创建任务ID
+        job_status:
+          type: string
+          description: 模板创建任务状态（RUNNING, SUCCEEDED, FAILED）
+        env_status:
+          type: string
+          description: 环境整体状态（REFRESHING, RUNNING，PARTIALLY_FAILED， UNKNOWN）
+        configuration:
+          description: 配置
+          $ref: '#/components/schemas/configuration'
+    environment_list_view:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        enterprise_project_id:
+          type: string
+        vpc_id:
+          type: string
+        creator:
+          type: string
+        create_time:
+          type: integer
+        update_time:
+          type: integer
+        deploy_mode:
+          type: string
+          enum:
+            - container
+            - virtualmachine
+            - mixed
+        labels:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+        config_mode:
+          type: string
+          description: 创建模式ui和template
+        template_source:
+          description: 模板来源
+          $ref: '#/components/schemas/template_source'
+        job_id:
+          type: string
+          description: 模板创建任务ID
+        job_status:
+          type: string
+          description: 模板创建任务状态（RUNNING, SUCCEEDED, FAILED）
+        env_status:
+          type: string
+          description: 环境整体状态（REFRESHING, RUNNING，PARTIALLY_FAILED， UNKNOWN）
+    environment_resources:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource'
+    environment_create:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          pattern: ^[a-z0-9-]+$
+          description: 名称
+        description:
+          type: string
+          maxLength: 128
+          description: 描述
+        deploy_mode:
+          type: string
+          enum:
+            - container
+            - virtualmachine
+            - mixed
+          description: 环境类型 virtualmachine/container/mixed
+        enterprise_project_id:
+          type: string
+          maxLength: 64
+          default: '0'
+          description: 异构场景，不需要指定enterprise_project_id
+        vpc_id:
+          type: string
+          maxLength: 64
+          description: 异构场景，不需要指定vpc_id
+        subnet_id:
+          type: string
+          description: 异构场景，不需要指定subnet_id
+        type:
+          type: string
+          description: 容器环境是否时高可用环境
+        environment_azs:
+          type: array
+          items:
+            type: string
+          description: 高可用环境的az列表
+        labels:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+          description: 标签
+        resource_create_mode:
+          type: string
+          description: 资源创建类型
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource'
+          description: 纳管的资源列表
+        iac_resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/iac_resource_create'
+          description: 创建的资源
+        configuration:
+          description: 环境变量配置
+          $ref: '#/components/schemas/configuration'
+        config_mode:
+          type: string
+          description: 创建模式ui和template
+        template_source:
+          description: 模板来源
+          $ref: '#/components/schemas/template_source'
+        input_values:
+          type: object
+          additionalProperties:
+            type: object
+          description: 模板参数
+        addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/addon_create'
+          description: 插件列表
+        provision:
+          type: boolean
+          description: 是否开通资源
+    environment_modify:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          pattern: ^[a-z0-9-]+$
+        description:
+          type: string
+          maxLength: 128
+        enterprise_project_id:
+          type: string
+          maxLength: 64
+          description: 异构场景，不需要指定enterprise_project_id
+        labels:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+        template_source:
+          description: 模板来源
+          $ref: '#/components/schemas/template_source'
+        input_values:
+          type: object
+          additionalProperties:
+            type: object
+          description: 模板参数
+        configuration:
+          description: 配置
+          $ref: '#/components/schemas/configuration'
+    environment_resource_modify:
+      type: object
+      properties:
+        resources:
+          description: for custom type
+          type: array
+          items:
+            $ref: '#/components/schemas/resource'
+    resource:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          maxLength: 64
+          description: 若资源创建类型为customServer, id为用户指定的资源唯一标识（限制用户id长度为32位）
+        name:
+          type: string
+          maxLength: 64
+        ip:
+          type: string
+          maxLength: 64
+          description: 若资源创建类型为customServer,需要用户指定ip
+        core:
+          type: integer
+          description: 若资源创建类型为customServer, 需要用户指定服务器的内核数
+        gib:
+          type: integer
+          description: 若资源创建类型为customServer, 需要用户指定服务器的内存（单位为Gib）
+        type:
+          $ref: '#/components/schemas/resource_type'
+        status:
+          type: string
+          description: 状态
+        is_iac:
+          type: boolean
+          description: 是否是iac资源
+        is_custom:
+          type: boolean
+          description: 是否是自定义资源
+        alias:
+          type: string
+          description: 资源别名
+        logical_resource_type:
+          type: string
+          description: iac资源类型
+    resource_type:
+      type: string
+      enum:
+        - vpc
+        - eip
+        - elb
+        - cce
+        - ecs
+        - as
+        - cse
+        - dcs
+        - rds
+        - customServer
+        - gaussdb
+        - dms_rocketmq
+        - mrs_es
+    error_response:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: SVCSTG.001xxxxx
+          description: error code, refer error code table
+        error_message:
+          type: string
+          example: error message
+          description: error detail
+    DeploymentsHistory:
+      type: object
+      properties:
+        history:
+          items:
+            $ref: '#/components/schemas/deployment_history'
+          type: array
+    iac_resource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 逻辑id
+        resource_id:
+          type: string
+          description: 真实资源id
+        name:
+          type: string
+          description: 资源名
+        type:
+          type: string
+          description: 资源类型
+        status:
+          type: string
+          description: 状态, init, mark_update, mark_delete, creation_complete
+        custom_tf:
+          type: string
+          description: 自定义模板
+        vars_body:
+          type: object
+          additionalProperties:
+            type: object
+          description: 参数
+        vars_structure:
+          type: array
+          items:
+            $ref: '#/components/schemas/var_structure'
+          description: 加密参数
+    var_structure:
+      type: object
+      properties:
+        var_key:
+          type: string
+        var_value:
+          type: string
+    iac_resource_create:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 逻辑id
+        name:
+          type: string
+          description: 资源名
+        type:
+          type: string
+          description: ecs, rds, as, eip, hcl
+        custom_tf:
+          type: string
+          description: 自定义hcl模板
+        vars_body:
+          type: object
+          additionalProperties:
+            type: object
+          description: 参数
+        vars_structure:
+          type: array
+          items:
+            $ref: '#/components/schemas/var_structure'
+          description: 加密参数
+        template_id:
+          type: string
+          description: 模板ID
+        template_body:
+          type: object
+          additionalProperties:
+            type: object
+          description: 模板内容
+    deployment_history:
+      type: object
+      properties:
+        deployment_id:
+          type: string
+          example: ''
+          description: 部署历史id
+        task_id:
+          type: string
+          example: ''
+          description: task id
+        status:
+          type: string
+          example: ''
+          description: 状态
+        template_uri:
+          type: string
+          example: string
+          description: 模板uri
+        template_body:
+          type: string
+          example: string
+          description: 模板body
+        vars_body:
+          type: string
+          example: string
+          description: 参数body
+        vars_uri:
+          type: string
+          example: string
+          description: 参数uri
+        vars_structure:
+          type: string
+          example: string
+          description: 加密参数
+        stack_resources:
+          type: string
+          example: string
+          description: 资源
+        stack_output:
+          type: string
+          example: string
+          description: 输出
+        creator:
+          type: string
+          example: string
+        create_time:
+          type: string
+          example: string
+        modify_time:
+          type: string
+          example: string
+    stack_event:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          example: huaweicloud_vpc
+        resource_name:
+          type: string
+          example: vpc
+        elapsed_seconds:
+          type: integer
+          format: int32
+          example: 8
+        event_message:
+          type: string
+          example: 'huaweicloud_vpc.vpc: Creation complete after 8s [id=38d617da-9b7f-4550-9ff7-d0e271dd4735]'
+        event_type:
+          type: string
+          example: CREATION_COMPLETE
+        resource_id_key:
+          type: string
+          example: id
+        resource_id_value:
+          type: string
+          example: 38d617da-9b7f-4550-9ff7-d0e271dd4735
+        time:
+          type: string
+          example: '2023-05-17T11:56:40Z'
+    cell_view:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 19a05242-44e2-4ba7-aa7d-1d84bd15d96e
+        environment_id:
+          type: string
+          example: ec422f8c-1aed-49e8-af79-ab209186d789
+        name:
+          type: string
+          example: cell-test-gray
+        az_id:
+          type: string
+          example: gray
+        cell_group:
+          type: string
+          example: null
+        labels:
+          items:
+            properties:
+              key:
+                type: string
+                example: LOGIC_CELL_NAME
+              value:
+                type: string
+                example: gray
+          type: array
+        description:
+          type: string
+          example: gray
+        project_id:
+          type: string
+          example: 79c4086f5f3a4e34a92601dfc64b1e8c
+        creator:
+          type: string
+          example: niezixiong
+        create_time:
+          type: integer
+          format: int32
+          example: 1721961986845
+        update_time:
+          type: integer
+          format: int32
+          example: 1721961986845
+        status:
+          type: string
+          example: null
+        base_resources:
+          type: array
+          items:
+            type: string
+        gateways:
+          type: string
+          example: null
+    cell_create:
+      type: object
+      required:
+        - name
+        - az_id
+      properties:
+        environment_id:
+          type: string
+          example: ec422f8c-1aed-49e8-af79-ab209186d789
+        name:
+          type: string
+          example: cell-test-gray
+        az_id:
+          type: string
+          example: gray
+        cell_group:
+          type: string
+          example: null
+        labels:
+          items:
+            properties:
+              key:
+                type: string
+                example: LOGIC_CELL_NAME
+              value:
+                type: string
+                example: gray
+          type: array
+        description:
+          type: string
+          example: gray
+    cell_modify:
+      type: object
+      properties:
+        name:
+          type: string
+          example: cell-test-gray
+        labels:
+          items:
+            properties:
+              key:
+                type: string
+                example: LOGIC_CELL_NAME
+              value:
+                type: string
+                example: gray
+          type: array
+        description:
+          type: string
+          example: gray
+    environment_list_resp:
+      type: object
+      properties:
+        count:
+          type: string
+        environments:
+          type: array
+          items:
+            $ref: '#/components/schemas/environment_list_view'
+    http_header:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    template_source:
+      type: object
+      properties:
+        storage:
+          type: string
+          example: obs
+        url:
+          type: string
+          example: obs://xxx/test.zip
+        http_username:
+          type: string
+          example: test
+        http_password:
+          type: string
+          example: xxx
+        http_headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/http_header'
+    parse_template_package_req:
+      type: object
+      properties:
+        template_source:
+          $ref: '#/components/schemas/template_source'
+        environment_id:
+          type: string
+    template_content:
+      type: object
+      properties:
+        template:
+          type: object
+          additionalProperties:
+            type: string
+        variables:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/variable'
+        input_values:
+          type: object
+          additionalProperties:
+            type: object
+    variable:
+      type: object
+      properties:
+        type:
+          type: string
+          example: string
+        default:
+          type: string
+          example: xxx
+        description:
+          type: string
+          example: name
+    environment_upsert_resp:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        enterprise_project_id:
+          type: string
+        vpc_id:
+          type: string
+        creator:
+          type: string
+        create_time:
+          type: integer
+        update_time:
+          type: integer
+        deploy_mode:
+          type: string
+          enum:
+            - container
+            - virtualmachine
+            - mixed
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource'
+        labels:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+        resource_create_mode:
+          type: string
+          description: 资源创建类型
+        iac_resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/iac_resource'
+          description: iac资源列表
+        iac_task_status:
+          type: string
+          description: iac任务状态
+        config_mode:
+          type: string
+          description: 创建模式ui和template
+        template_source:
+          description: 模板来源
+          $ref: '#/components/schemas/template_source'
+        template_content:
+          $ref: '#/components/schemas/template_content'
+          description: 模板内容
+        job_id:
+          type: string
+          description: 模板创建任务ID
+        configuration:
+          description: 配置
+          $ref: '#/components/schemas/configuration'
+    job:
+      type: object
+      properties:
+        job_id:
+          type: string
+          example: JOBcb1069b6-044c-411d-9ed9-d45ba2b443a4
+          description: ID
+        begin_time:
+          type: string
+          example: '2024-11-16T03:11:29.60174Z'
+          description: 开始时间
+        end_time:
+          type: string
+          example: '2024-11-16T03:12:14.098038Z'
+          description: 结束时间
+        execution_status:
+          type: string
+          example: SUCCEEDED
+          description: 执行状态
+    record:
+      type: object
+      properties:
+        version:
+          type: string
+          example: 2024.1116.111129
+          description: 版本号
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/job'
+          example: '[]'
+          description: 任务列表
+    env_records_resp:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/record'
+          description: 记录列表
+        count:
+          type: integer
+          format: int32
+          description: 记录总数
+    env_action_request:
+      type: object
+      properties:
+        action:
+          type: string
+          description: 操作（rollback_current,refresh）
+    env_action_resp:
+      type: object
+      properties:
+        environment_id:
+          type: string
+          description: 环境ID
+        job_id:
+          type: string
+          description: Job ID
+    resource_config:
+      type: object
+      properties:
+        resource_id:
+          type: string
+          description: 资源ID
+        configuration:
+          description: 配置
+          properties:
+            env:
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+                    example: ''
+                    description: 变量名
+                  value:
+                    type: string
+                    example: ''
+                    description: 变量值
+              description: 环境变量
+    resource_env:
+      type: object
+      properties:
+        resource_id:
+          type: string
+          example: ''
+          description: 资源类型
+        resource_name:
+          type: string
+          example: ''
+          description: 资源名称
+        resource_type:
+          type: string
+          example: ''
+          description: 资源类型
+        envs:
+          type: array
+          items:
+            $ref: '#/components/schemas/env'
+          example: '[]'
+          description: 环境变量
+    env:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    configuration:
+      type: object
+      properties:
+        resource_envs:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource_env'
+          description: 资源环境变量
+        envs:
+          type: array
+          items:
+            $ref: '#/components/schemas/env'
+          description: 环境变量
+    resource_status:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 资源id
+        name:
+          type: string
+          description: 资源名
+        type:
+          type: string
+          description: 资源类型
+        status:
+          type: string
+          description: 状态
+    env_status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: 状态 RUNNING/PARTIALLY_FAILED
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource_status'
+          description: 资源列表
+    addon_create:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        cse_id:
+          type: string
+        cce_id:
+          type: string
+    resource_template_list_view:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 33a4dcc9-43b7-4911-addd-ca6169b1ab6c
+          description: 模板ID
+        name:
+          type: string
+          example: test42
+          description: 模板名
+        description:
+          type: string
+          example: xxxxx
+          description: 模板描述
+        project_id:
+          type: string
+          example: 063a3158b1a34710b36ad208b9497d00
+          description: 项目ID
+        creator:
+          type: string
+          example: paas_servicestage_lwx554185
+          description: 创建人
+        create_time:
+          type: integer
+          format: int32
+          example: 1751944399833
+          description: 创建时间
+        update_time:
+          type: integer
+          format: int32
+          example: 1751944399833
+          description: 最后更新时间
+    list_templates_resp:
+      type: object
+      properties:
+        resource_templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/resource_template_list_view'
+          description: 模板列表
+        count:
+          type: string
+          description: 总数
+    template_create:
+      type: object
+      required:
+        - name
+        - content
+      properties:
+        name:
+          type: string
+          example: test13
+          description: 名称
+        description:
+          type: string
+          example: xxxxx
+          description: 描述
+        content:
+          type: string
+          example: ' xxx'
+          description: 模板内容
+    resource_template_view:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 33a4dcc9-43b7-4911-addd-ca6169b1ab6c
+          description: 模板ID
+        name:
+          type: string
+          example: test42
+          description: 模板名
+        description:
+          type: string
+          example: xxxxx
+          description: 模板描述
+        project_id:
+          type: string
+          example: 063a3158b1a34710b36ad208b9497d00
+          description: 项目ID
+        creator:
+          type: string
+          example: paas_servicestage_lwx554185
+          description: 创建人
+        create_time:
+          type: integer
+          format: int32
+          example: 1751944399833
+          description: 创建时间
+        update_time:
+          type: integer
+          format: int32
+          example: 1751944399833
+          description: 最后更新时间
+        content:
+          type: string
+          description: 模板内容
+    export_resource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 资源ID
+        type:
+          type: string
+          description: 资源类型
+    export_iac_resource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 资源ID
+        type:
+          type: string
+          description: 资源类型
+    export_environment:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/export_resource'
+        iac_resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/export_iac_resource'
+x-iam-meta:
+  auth-schemas:
+    version: v1
+    actions:
+      - name: servicestage:app:list
+        access_level: list
+        permission_only: false
+        description:
+          zh_CN: 查看环境和应用列表
+          en_US: List all environments and applications
+      - name: servicestage:app:get
+        access_level: read
+        permission_only: false
+        description:
+          zh_CN: 查询应用信息
+          en_US: View application information
+      - name: servicestage:app:modify
+        access_level: write
+        permission_only: false
+        description:
+          zh_CN: 更新应用
+          en_US: Update application
+    operations:
+      - operation_id: ListComponentAutoTunings
+        operation_action: servicestage:app:list
+      - operation_id: ShowComponentAutoTuningInfo
+        operation_action: servicestage:app:get
+      - operation_id: CreateComponentAutoTuning
+        operation_action: servicestage:app:modify
+      - operation_id: CancelComponentAutoTuning
+        operation_action: servicestage:app:modify
+      - operation_id: PostAutotuningLogs
+        operation_action: servicestage:app:modify
+      - operation_id: PostAutotuningResult
+        operation_action: servicestage:app:modify
