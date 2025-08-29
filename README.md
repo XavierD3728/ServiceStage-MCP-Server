@@ -20,9 +20,10 @@
 
 ## 🚀 快速开始
 
-### 资源准备
+### 环境准备
 
 #### ✅ Cherry Studio 下载
+- 本项目选择CherryStudio作为MCP Client
 - 官网：[https://www.cherry-ai.com/](https://www.cherry-ai.com/)
 
 #### ✅ 获取LLM Tokens
@@ -35,7 +36,7 @@
 #### ✅ ServiceStage OpenAPI spec
 - mcp_server_v2.0目录下
 
-### 环境准备
+### 项目启动
 
 #### ✅ Windows 下各版本mcp server项目启动
 - 部署流程：虚拟环境部署 --> 环境激活 -->代理配置 --> 安装依赖
@@ -43,20 +44,10 @@
 - 参考"创建虚拟环境.txt"
 
 #### ✅ Cherry Studio配置
-- 部署流程：配置模型服务（LLM Tokens） --> MCP设置
-- 各版本mcp server的MCP设置，参考对应目录下 "CherryStudio配置.txt"
-- 参考快速教程：[部署教程（Bilibili）](https://www.bilibili.com/video/BV1RNTtzMENj)
-
-#### ✅ 设置环境变量(可选）
-```powershell
-$env:HW_AUTH_TOKEN="（ServiceStage 控制台获取）"
-$env:SERVICESTAGE_BASE="https://servicestage.cn-north-4.myhuaweicloud.com"
-$env:CAE_BASE="https://cae.cn-north-4.myhuaweicloud.com"
-$env:FG_BASE="https://functiongraph.cn-north-4.myhuaweicloud.com"
-$env:SS_SPEC_PATH="D:/.../ss_environment_api.yaml" # v2 必需
-$env:HTTP_VERIFY="false"
-$env:HTTP_TIMEOUT="60"
-```
+- 部署流程：选择模型服务（LLM Tokens） --> 完成MCP设置
+- 各版本MCP配置及环境变量设置，参考对应目录下 "CherryStudio配置.txt"，推荐使用stdio通信协议
+- 快速教程：[部署教程（Bilibili）](https://www.bilibili.com/video/BV1RNTtzMENj)
+- MCP配置成功后，就可以通过CherryStudio与 Agent对话，调用ServiceStage工具，算网存环境资源
 
 ---
 
