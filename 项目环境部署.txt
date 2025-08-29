@@ -1,0 +1,50 @@
+从零开始配置虚拟环境（Windows PowerShell）
+================================================
+
+本指南说明如何在 Windows PowerShell 中创建并激活 Python 虚拟环境，并为 MCP Server 项目安装依赖。
+
+1. 进入目标目录
+----------------
+以配置 mcp_server_v2.0 为例：
+    cd D:\Programm\mcp_server_v2.0
+
+2. 创建虚拟环境（任选其一）
+----------------------------
+2.1 使用标准 Python：
+    python -m venv .venv
+
+2.2 使用 uv 工具（如果已安装 uv，推荐）：
+    uv venv
+
+完成后会在当前目录生成 .venv 文件夹。
+
+3. 激活虚拟环境
+----------------
+3.1 允许 PowerShell 执行脚本（首次需要）：
+    Set-ExecutionPolicy RemoteSigned -Scope Process
+
+3.2 激活 venv：
+    .\.venv\Scripts\Activate.ps1
+
+激活成功后，命令行前缀会变成：(.venv) PS D:\Programm\mcp_server_v2.0>
+
+4. 配置网络代理（如在公司内网）
+-------------------------------
+    $env:HTTP_PROXY = "http://<用户名>:<密码>@canpqwg00153.huawei.com:8080"
+    $env:HTTPS_PROXY = "http://<用户名>:<密码>@canpqwg00153.huawei.com:8080"
+
+5. 安装依赖
+-----------
+5.1 针对 gen_from_openapi.py（v2.0）：
+    pip install mcp httpx pyyaml
+
+5.2 针对 mcp_agent_ops.py（v3.0）：
+    pip install mcp httpx
+
+6. 验证依赖
+-----------
+    pip list
+
+确认已安装的包包含：mcp、httpx（以及 v2.0 的 pyyaml）。
+
+环境配置完成后，即可运行对应脚本。

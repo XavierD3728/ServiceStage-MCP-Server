@@ -31,7 +31,7 @@
 - 华为本地部署LLM：https://3ms.huawei.com/km/blogs/details/15325384
 
 #### ✅ 获取ServiceStage Tokens
-- 获取华为云ServiceStage Token:参考"Token获取.txt"
+- 获取华为云ServiceStage Token:参考"SSToken获取.txt"
 
 #### ✅ ServiceStage OpenAPI spec
 - mcp_server_v2.0目录下
@@ -41,7 +41,7 @@
 #### ✅ Windows 下各版本mcp server项目启动
 - 部署流程：虚拟环境部署 --> 环境激活 -->代理配置 --> 安装依赖
 - 推荐以各版本mcp_server_vX.0作为独立目录，进行项目管理及其环境管理
-- 参考"创建虚拟环境.txt"
+- 参考"项目环境部署.txt"
 
 #### ✅ Cherry Studio配置
 - 部署流程：选择模型服务（LLM Tokens） --> 完成MCP设置
